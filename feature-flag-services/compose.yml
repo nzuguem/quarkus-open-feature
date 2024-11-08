@@ -1,0 +1,3 @@
+include:
+  - path: flagd/compose.yml
+  - path: goff/compose.yml

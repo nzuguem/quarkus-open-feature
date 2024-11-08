@@ -1,0 +1,32 @@
+{
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {},
+        "ghcr.io/devcontainers-extra/features/quarkus-sdkman:2": {
+            "jdkVersion" : "21",
+            "jdkDistro": "tem"
+        },
+        "ghcr.io/guiyomh/features/vim": {}
+    },
+    "customizations": {
+        "vscode": {
+            "settings": { 
+                "java.configuration.updateBuildConfiguration": "interactive"
+			},
+            "extensions": [
+                "mhutchie.git-graph",
+                "redhat.vscode-yaml",
+                "EditorConfig.EditorConfig",
+                "vscjava.vscode-java-pack",
+                "Oracle.oracle-java",
+                "redhat.vscode-quarkus",
+                "vscjava.vscode-maven"
+            ]
+        }
+  },
+
+  "postStartCommand": "docker compose -f feature-flag-services/compose.yml up -d --wait"
+}

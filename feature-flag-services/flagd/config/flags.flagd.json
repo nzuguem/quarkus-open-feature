@@ -1,0 +1,35 @@
+{
+    "$schema": "https://flagd.dev/schema/v0/flags.json",
+    "flags": {
+      "welcome-message": {
+        "variants": {
+          "on": true,
+          "off": false
+        },
+        "state": "ENABLED",
+        "defaultVariant": "on"
+      },
+      "greeting-locale": {
+        "state": "ENABLED",
+        "variants": {
+          "fr": "Bonjour",
+          "en": "Hello"
+        },
+        "defaultVariant": "fr",
+        "targeting": {
+          "if": [
+            {
+              "==": [
+                {
+                  "var": "locale"
+                },
+                "fr"
+              ]
+            },
+            "fr",
+            "en"
+          ]
+        }
+      }
+    }
+  }

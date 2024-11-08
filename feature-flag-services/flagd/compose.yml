@@ -1,0 +1,15 @@
+services:
+  flagd:
+    container_name: flagd
+    image: ghcr.io/open-feature/flagd
+    ports:
+      - 8013:8013
+    volumes:
+      # to generate flagd definition :
+      # - https://yangzhaox.github.io/flagd-ui/
+      # - https://flagd.dev/playground/
+      - ./config:/etc/flagd/
+    command: 
+      - start 
+      - --uri
+      - file:/etc/flagd/flags.flagd.json

@@ -1,0 +1,10 @@
+services:
+  go-feature-flag:
+    container_name: go-feature-flag
+    image: gofeatureflag/go-feature-flag
+    ports:
+      - 1031:1031
+    volumes:
+      # to generate go-feature-flag definition :
+      # - https://gofeatureflag.org/editor
+      - ./config:/goff

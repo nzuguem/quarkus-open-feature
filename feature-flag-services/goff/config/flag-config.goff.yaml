@@ -1,0 +1,29 @@
+welcome-message:
+  variations:
+    on: true
+    off: false
+  defaultRule:
+    variation: "on"
+
+greeting-locale:
+  variations:
+    fr: Bonjour
+    en: Hello
+  targeting:
+    - name: french
+      query: locale eq "fr"
+      variation: fr
+  defaultRule:
+    variation: en
+
+percentage-feature-flag:
+  variations:
+    kevin:
+      name: NZUGUEM
+    idriss:
+      name: TAYO
+  defaultRule:
+    percentage:
+      kevin: 90
+      idriss: 10
+
