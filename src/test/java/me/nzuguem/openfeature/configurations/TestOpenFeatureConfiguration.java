@@ -22,20 +22,27 @@ public class TestOpenFeatureConfiguration {
     @Named("goff")
     public FeatureProvider goFeatureFlagProvider() throws InvalidOptions {
 
-        var flags = Map.<String, Flag<?>>ofEntries(
-            Map.entry("welcome-message", Flag.<Boolean>builder()
-                        .variant("on", Boolean.TRUE)
-                        .variant("off", Boolean.FALSE)
-                        .defaultVariant("on")
-                        .build())
-        );
+        var welcomeMessageFeatureFlag = Map.entry("welcome-message", Flag.<Boolean>builder()
+                .variant("on", Boolean.TRUE)
+                .variant("off", Boolean.FALSE)
+                .defaultVariant("on")
+                .build()
+            );
 
-        return new InMemoryProvider(flags);
+        var featureFlags = Map.<String, Flag<?>>ofEntries(welcomeMessageFeatureFlag);
+
+        return new InMemoryProvider(featureFlags);
     }
 
     @Mock
     @Named("env-var")
     public FeatureProvider envVarProvider() {
+        return new NoOpProvider();
+    }
+
+    @Mock
+    @Named("unleash")
+    public FeatureProvider unleashProvider() {
         return new NoOpProvider();
     }
     

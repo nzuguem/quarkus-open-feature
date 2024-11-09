@@ -9,6 +9,14 @@
         "state": "ENABLED",
         "defaultVariant": "on"
       },
+      "use-ai": {
+        "variants": {
+          "on": true,
+          "off": false
+        },
+        "state": "ENABLED",
+        "defaultVariant": "on"
+      },
       "greeting-locale": {
         "state": "ENABLED",
         "variants": {

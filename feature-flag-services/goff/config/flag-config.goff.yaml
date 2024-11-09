@@ -27,3 +27,12 @@ percentage-feature-flag:
       kevin: 90
       idriss: 10
 
+use-ai:
+  variations:
+    on: true
+    off: false
+  defaultRule:
+    percentage:
+      on: 50
+      off: 50
+

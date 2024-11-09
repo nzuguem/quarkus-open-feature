@@ -1,5 +1,6 @@
 package me.nzuguem.openfeature.configurations;
 
+import java.net.URI;
 import java.util.HashMap;
 
 import dev.openfeature.contrib.providers.envvar.EnvVarProvider;
@@ -10,11 +11,15 @@ import dev.openfeature.contrib.providers.flagd.FlagdProvider;
 import dev.openfeature.contrib.providers.gofeatureflag.GoFeatureFlagProvider;
 import dev.openfeature.contrib.providers.gofeatureflag.GoFeatureFlagProviderOptions;
 import dev.openfeature.contrib.providers.gofeatureflag.exception.InvalidOptions;
+import dev.openfeature.contrib.providers.unleash.UnleashProvider;
+import dev.openfeature.contrib.providers.unleash.UnleashProviderConfig;
 import dev.openfeature.sdk.FeatureProvider;
 import dev.openfeature.sdk.ImmutableContext;
 import dev.openfeature.sdk.OpenFeatureAPI;
 import dev.openfeature.sdk.Value;
 import dev.openfeature.sdk.exceptions.OpenFeatureError;
+import io.getunleash.util.UnleashConfig;
+import io.quarkus.arc.profile.UnlessBuildProfile;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Named;
@@ -23,13 +28,15 @@ public class OpenFeatureConfiguration {
 
     public static final String ENV_VAR_CLIENT_NAME = "env-var";
     public static final String GOFF_CLIENT_NAME = "goff";
+    public static final String UNLEASH_CLIENT_NAME = "unleash";
 
 
     @ApplicationScoped
     public OpenFeatureAPI openFeatureAPI(
         @Named("flagd") FeatureProvider flagdProvider,
         @Named("goff") FeatureProvider goFeatureFlagProvider,
-        @Named("env-var") FeatureProvider envVarProvider
+        @Named("env-var") FeatureProvider envVarProvider,
+        @Named("unleash") FeatureProvider unleashProvider
     ) {
 
         var openFeatureAPI = OpenFeatureAPI.getInstance();
@@ -46,6 +53,7 @@ public class OpenFeatureConfiguration {
             openFeatureAPI.setProvider(flagdProvider);
             openFeatureAPI.setProvider(GOFF_CLIENT_NAME, goFeatureFlagProvider);
             openFeatureAPI.setProviderAndWait(ENV_VAR_CLIENT_NAME, envVarProvider);
+            openFeatureAPI.setProvider(UNLEASH_CLIENT_NAME, unleashProvider);
 
             // Global EvaluationContext (Static) - API Level
             // https://openfeature.dev/docs/reference/concepts/evaluation-context
@@ -64,6 +72,7 @@ public class OpenFeatureConfiguration {
 
     @Produces
     @Named("flagd")
+    @UnlessBuildProfile("test")
     public FeatureProvider flagdProvider() {
 
         var flagdProviderOptions = FlagdOptions.builder()
@@ -78,6 +87,7 @@ public class OpenFeatureConfiguration {
 
     @Produces
     @Named("goff")
+    @UnlessBuildProfile("test")
     public FeatureProvider goFeatureFlagProvider() throws InvalidOptions {
 
         var goFeatureFlagProviderOptions = GoFeatureFlagProviderOptions
@@ -91,8 +101,25 @@ public class OpenFeatureConfiguration {
 
     @Produces
     @Named("env-var")
+    @UnlessBuildProfile("test")
     public FeatureProvider envVarProvider() {
         return new EnvVarProvider(EnvironmentKeyTransformer.toUpperCaseTransformer());
+    }
+
+    @Produces
+    @Named("unleash")
+    @UnlessBuildProfile("test")
+    public FeatureProvider unleashProvider() {
+
+        var unleashConfigBuilder = UnleashConfig.builder()
+            .unleashAPI(URI.create("http://localhost:4242/api/"))
+            .projectName("default");
+
+        var unleashProviderConfig = UnleashProviderConfig.builder()
+            .unleashConfigBuilder(unleashConfigBuilder)
+            .build();
+
+        return new UnleashProvider(unleashProviderConfig);
     }
     
 }

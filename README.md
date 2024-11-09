@@ -110,6 +110,7 @@ You can manipulate the various endpoints indicated in the Dev UI (***Resource En
 ## Resources
 
 - [OpenFeature : La normalisation du feature flags ?][openfeature-devfest-nantes-2024-yt]
+- [Feature Flag best practice][feature-flag-best-pratices]
 
 <!-- Links -->
 
@@ -124,3 +125,4 @@ You can manipulate the various endpoints indicated in the Dev UI (***Resource En
 [openfeature-providers]: https://openfeature.dev/docs/reference/concepts/provider
 [openfeature-evaluation-context]: https://openfeature.dev/docs/reference/concepts/evaluation-context
 [openfeature-ofrep]: https://gofeatureflag.org/docs/experimental/ofrep
+[feature-flag-best-pratices]: https://gofeatureflag.org/blog/feature-flag-best-practice?_highlight=best

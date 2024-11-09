@@ -15,6 +15,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import me.nzuguem.openfeature.configurations.OpenFeatureConfiguration;
+import me.nzuguem.openfeature.services.HelloAiService;
 
 @Path("goff")
 @RunOnVirtualThread
@@ -22,8 +23,12 @@ public class GreetingResourceGoff {
 
     private final Client client;
 
+    private final HelloAiService helloAiService;
 
-    GreetingResourceGoff(OpenFeatureAPI openFeatureAPI) {
+
+    GreetingResourceGoff(OpenFeatureAPI openFeatureAPI, HelloAiService helloAiService) {
+
+        this.helloAiService = helloAiService;
 
         client = openFeatureAPI.getClient(OpenFeatureConfiguration.GOFF_CLIENT_NAME);
         var clientAttrs = new HashMap<String, Value>();
@@ -75,5 +80,19 @@ public class GreetingResourceGoff {
 
         return Response.ok(json.asStructure().asObjectMap()).build();
 
+    }
+
+    @GET
+    @Path("ai")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String helloAi() {
+
+        var requestCtx = new MutableContext(UUID.randomUUID().toString());
+
+        if (this.client.getBooleanValue("use-ai", false, requestCtx)) {
+            return this.helloAiService.hello("Tell me hello !");
+        }
+
+        return "Hello from Quarkus REST";
     }
 }

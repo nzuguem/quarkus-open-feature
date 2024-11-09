@@ -12,6 +12,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import me.nzuguem.openfeature.services.HelloAiService;
 
 @Path("flagd")
 @RunOnVirtualThread
@@ -19,8 +20,12 @@ public class GreetingResourceFlagd {
 
     private final Client client;
 
+    private final HelloAiService helloAiService;
 
-    GreetingResourceFlagd(OpenFeatureAPI openFeatureAPI) {
+
+    GreetingResourceFlagd(OpenFeatureAPI openFeatureAPI, HelloAiService helloAiService) {
+
+        this.helloAiService = helloAiService;
 
         client = openFeatureAPI.getClient();
         var clientAttrs = new HashMap<String, Value>();
@@ -54,5 +59,17 @@ public class GreetingResourceFlagd {
         var requestCtx = new MutableContext(requestAttrs);
 
         return this.client.getStringValue("greeting-locale", "Hello", requestCtx);
+    }
+
+    @GET
+    @Path("ai")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String helloAi() {
+
+        if (this.client.getBooleanValue("use-ai", false)) {
+            return this.helloAiService.hello("Tell me hello !");
+        }
+
+        return "Hello from Quarkus REST";
     }
 }

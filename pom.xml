@@ -63,7 +63,17 @@
             <artifactId>go-feature-flag</artifactId>
             <version>0.3.0</version>
         </dependency>
+        <dependency>
+            <groupId>dev.openfeature.contrib.providers</groupId>
+            <artifactId>unleash</artifactId>
+            <version>0.1.0-alpha</version>
+        </dependency>
         <!-- Open Feature -->
+        <dependency>
+            <groupId>io.quarkiverse.langchain4j</groupId>
+            <artifactId>quarkus-langchain4j-openai</artifactId>
+            <version>0.21.0</version>
+        </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-junit5</artifactId>
