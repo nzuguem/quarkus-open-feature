@@ -28,5 +28,5 @@
         }
   },
 
-  "postStartCommand": "docker compose -f feature-flag-services/compose.yml up -d --wait"
+  "postStartCommand": "docker compose up -d --wait"
 }
